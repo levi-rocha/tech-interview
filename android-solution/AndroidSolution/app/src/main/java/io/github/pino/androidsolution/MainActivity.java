@@ -1,6 +1,5 @@
 package io.github.pino.androidsolution;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -35,10 +34,36 @@ public class MainActivity extends AppCompatActivity {
 
         List<ListItem> items = new ArrayList<ListItem>();
         items.add(new Header("Category 1"));
-        items.add(new Article("Text 1", "Rabble rabble"));
-        items.add(new Article("Text 2", "Rabble rabble"));
+        int[] irids1 = {R.drawable.pino1};
+        String title1 = "Article 1";
+        int cat1 = Category.MYLIFE.ordinal();
+        String content1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA \n" +
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA \n\n" +
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        items.add(new Article(irids1, title1, cat1, content1));
+        int[] irids2 = {R.drawable.pino1, R.drawable.pino2};
+        String title2 = "Article 2";
+        int cat2 = Category.MYLIFE.ordinal();
+        String content2 = "BBBB BBBBBBBBB BBBBBBBBB BBBB BBBBBBB \n" +
+                "BBBBBB BBBBBBBBB BBBBBB BBBB BBBBBBBB \n\n" +
+                "BBBBB BBBBBBBBB BBBB BBB BBBBBBBBBBBB \n\n" +
+                "BBBBBBBB BBBBBBB BBB BBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBB BBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
+                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
+        items.add(new Article(irids2, title2, cat2, content2));
         items.add(new Header("Category 2"));
-        items.add(new Article("Text 3", "Rabble rabble"));
         ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
         ListView list = (ListView) findViewById(R.id.articleList);
         list.setAdapter(adapter);

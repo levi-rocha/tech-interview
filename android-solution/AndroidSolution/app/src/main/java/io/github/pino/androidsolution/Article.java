@@ -85,6 +85,7 @@ public class Article implements ListItem, Parcelable {
 
     @Override
     public View getListItemView(final LayoutInflater inflater, View convertView) {
+        final Article article = this;
         //TODO layouts
         View view;
         if (convertView == null) {
@@ -94,8 +95,9 @@ public class Article implements ListItem, Parcelable {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             final int width = displayMetrics.widthPixels;
-            addImage(inflater, view, mGallery, R.drawable.pino1, width);
-            addImage(inflater, view, mGallery, R.drawable.pino2, width);
+            for (int resource : imageResourceIds) {
+                addImage(inflater, view, mGallery, resource, width);
+            }
             ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
             btnLeft.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,7 +121,7 @@ public class Article implements ListItem, Parcelable {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
-                    intent.putExtra(ARTICLE, new Article("I wanna be the very best", "Like no one ever was"));
+                    intent.putExtra(ARTICLE, article);
                     inflater.getContext().startActivity(intent);
                 }
             });
@@ -129,7 +131,12 @@ public class Article implements ListItem, Parcelable {
         TextView txtTitle = (TextView) view.findViewById(R.id.txtArticleListItemTitle);
         txtTitle.setText(this.title);
         TextView txtPreview = (TextView) view.findViewById(R.id.txtArticleListItemPreview);
-        txtPreview.setText(content.toString());
+        if (content.length() > 60) {
+            txtPreview.setText(content.substring(0, 60) + "...");
+        } else {
+            txtPreview.setText(content);
+        }
+
         return view;
     }
 
