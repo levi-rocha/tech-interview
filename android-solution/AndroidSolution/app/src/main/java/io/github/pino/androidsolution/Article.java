@@ -67,7 +67,6 @@ public class Article implements ListItem {
             btnRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //mScroller.scrollBy(1080, 0);
                     ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()+width);
                     animator.setDuration(360);
                     animator.start();

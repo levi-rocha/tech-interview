@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
         initMenu();
 
         List<ListItem> items = new ArrayList<ListItem>();
-        items.add(new Header("Header 1"));
+        items.add(new Header("Category 1"));
         items.add(new Article("Text 1", "Rabble rabble"));
         items.add(new Article("Text 2", "Rabble rabble"));
-        items.add(new Header("Header 2"));
+        items.add(new Header("Category 2"));
         items.add(new Article("Text 3", "Rabble rabble"));
         ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
         ListView list = (ListView) findViewById(R.id.articleList);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void initMenu() {
         mMenuListItems = getResources().getStringArray(R.array.drawer_array);
         mMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mMenuList = (ListView) findViewById(R.id.left_drawer);
+        mMenuList = (ListView) findViewById(R.id.left_drawer_list);
 
         // Set up menu list
         mMenuList.setAdapter(new ArrayAdapter<String>(this,
