@@ -3,6 +3,7 @@ package io.github.pino.androidsolution;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,7 +11,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.support.v7.app.ActionBarDrawerToggle;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,9 +25,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO update menu layout
         setContentView(R.layout.activity_main);
         initActionBar();
         initMenu();
+
+        List<ListItem> items = new ArrayList<ListItem>();
+        items.add(new Header("Header 1"));
+        items.add(new Article("Text 1", "Rabble rabble"));
+        items.add(new Article("Text 2", "Rabble rabble"));
+        items.add(new Header("Header 2"));
+        items.add(new Article("Text 3", "Rabble rabble"));
+        ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
+        ListView list = (ListView) findViewById(R.id.articleList);
+        list.setAdapter(adapter);
 
 
     }
