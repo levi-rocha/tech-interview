@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">AndroidSolution</string>
+    <string name="app_name">Android Solution</string>
+    <string-array
+        name="drawer_array">
+        <item>Home</item>
+        <item>Favorites</item>
+    </string-array>
+    <string name="drawer_open">Open Menu</string>
+    <string name="drawer_close">Close Menu</string>
+    <string name="drawer_title">Menu</string>
+    <string name="home_title">Digital Space</string>
 </resources>
