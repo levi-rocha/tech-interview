@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#000">
+
+    <HorizontalScrollView
+        android:id="@+id/scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            />
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:padding="12dp"
+        android:background="#80000000">
+
+        <TextView
+            android:id="@+id/txtArticleItemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:paddingBottom="4dp"
+            android:textColor="#ffffffff"/>
+
+        <TextView
+            android:id="@+id/txtArticleItemPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#ffffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/btnArticleLeft"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.25"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow_left"
+            android:background="#00000000" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="#00000000"/>
+        <ImageView
+            android:id="@+id/btnArticleRight"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.25"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow_right"
+            android:background="#00000000" />
+    </LinearLayout>
+
+
+
+</FrameLayout>

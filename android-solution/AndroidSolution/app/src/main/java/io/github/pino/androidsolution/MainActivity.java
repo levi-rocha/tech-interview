@@ -1,5 +1,6 @@
 package io.github.pino.androidsolution;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final static String ARTICLE = "io.github.pino.watchthisandroid.ARTICLE";
+
     private DrawerLayout mMenu;
     private ListView mMenuList;
     private String[] mMenuListItems;
@@ -25,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO update menu layout
+
         setContentView(R.layout.activity_main);
         initActionBar();
         initMenu();
@@ -39,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
         ListView list = (ListView) findViewById(R.id.articleList);
         list.setAdapter(adapter);
-
-
     }
 
     /* Action bar and menu setup */
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectMenuItem(int position) {
         // TODO: change activities
+
     }
 
     @Override
