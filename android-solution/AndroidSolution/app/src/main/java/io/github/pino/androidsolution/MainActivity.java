@@ -27,46 +27,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         initActionBar();
         initMenu();
+        initDefaultArticles();
+        updateArticles();
+    }
 
-        List<ListItem> items = new ArrayList<ListItem>();
-        items.add(new Header("Category 1"));
-        int[] irids1 = {R.drawable.pino1};
+    private void initDefaultArticles() {
+        JoyjetApplication appState = ((JoyjetApplication) this.getApplication());
         String title1 = "Article 1";
         int cat1 = Category.MYLIFE.ordinal();
-        String content1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA \n" +
-                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA \n\n" +
-                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-        items.add(new Article(irids1, title1, cat1, content1));
+        String content1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam imperdiet ac diam vitae viverra. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin iaculis, justo ac pulvinar egestas, eros metus malesuada ante, nec faucibus arcu ante ut nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus tristique mauris ac eros laoreet pretium vitae nec nisl. Phasellus in erat euismod, posuere risus eu, pretium felis. Cras vulputate euismod lobortis. Ut et iaculis libero. Donec at magna congue, feugiat justo tempor, posuere turpis. Donec rutrum, leo vitae vulputate suscipit, libero mauris lacinia justo, id commodo risus nisl non orci.\n" +
+                "\n" +
+                "Donec ut commodo arcu, vel accumsan leo. Vestibulum dictum mauris in eleifend eleifend. Ut et molestie mauris. Sed finibus risus ut purus efficitur semper. Fusce diam leo, congue vel blandit nec, facilisis sed elit. Suspendisse potenti. Morbi malesuada efficitur laoreet. Morbi pharetra id orci id imperdiet.\n" +
+                "\n" +
+                "Maecenas id arcu risus. Ut id massa suscipit, luctus ante imperdiet, vestibulum neque. Nunc auctor eros in mauris laoreet, sit amet sodales mauris hendrerit. Phasellus vestibulum lobortis nisi porttitor tempus. Vestibulum iaculis pretium mi a hendrerit. Curabitur a quam placerat, laoreet felis in, congue ligula. Suspendisse semper molestie nisi, in bibendum ligula auctor imperdiet. Morbi dapibus lacinia justo sit amet finibus. Nam laoreet nunc leo, nec posuere libero vulputate id. Nulla scelerisque euismod tellus, non commodo nisl vestibulum sed. Praesent vehicula suscipit libero, vitae malesuada nulla tincidunt semper.";
+        Article article1 = new Article(null, title1, cat1, content1, false);
+        appState.addToArticles(article1);
         int[] irids2 = {R.drawable.pino1, R.drawable.pino2};
         String title2 = "Article 2";
-        int cat2 = Category.MYLIFE.ordinal();
-        String content2 = "BBBB BBBBBBBBB BBBBBBBBB BBBB BBBBBBB \n" +
-                "BBBBBB BBBBBBBBB BBBBBB BBBB BBBBBBBB \n\n" +
-                "BBBBB BBBBBBBBB BBBB BBB BBBBBBBBBBBB \n\n" +
-                "BBBBBBBB BBBBBBB BBB BBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBB BBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB \n\n" +
-                "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
-        items.add(new Article(irids2, title2, cat2, content2));
-        items.add(new Header("Category 2"));
-        ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
-        ListView list = (ListView) findViewById(R.id.articleList);
-        list.setAdapter(adapter);
+        int cat2 = Category.PLACES.ordinal();
+        Article article2 = new Article(irids2, title2, cat2, content1, false);
+        appState.addToArticles(article2);
     }
 
     /* Action bar and menu setup */
@@ -150,5 +133,34 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private void updateArticles() {
+        JoyjetApplication appState = ((JoyjetApplication) this.getApplication());
+        List<ListItem> items = new ArrayList<ListItem>();
+        List<Article> articles = appState.getArticles();
+        Category[] categories = Category.values();
+        for (Category category : categories) {
+            items.add(new Header(category.toString()));
+            for (Article article : articles) {
+                System.out.println(article.getTitle());
+                if (article.getCategoryId() == category.ordinal()) {
+                    items.add(article);
+                }
+            }
+        }
+        ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, items);
+        ListView list = (ListView) findViewById(R.id.articleList);
+        list.setAdapter(adapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateArticles();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateArticles();
+    }
 }

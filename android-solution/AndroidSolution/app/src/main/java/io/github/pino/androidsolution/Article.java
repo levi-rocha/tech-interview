@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.UUID;
+
 import static io.github.pino.androidsolution.MainActivity.ARTICLE;
 
 /**
@@ -28,6 +30,13 @@ public class Article implements ListItem, Parcelable {
     private int[] imageResourceIds;
     private String title;
     private int categoryId;
+    private String content;
+    private boolean favorite;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
 
     public int[] getImageResourceIds() {
         return imageResourceIds;
@@ -35,6 +44,14 @@ public class Article implements ListItem, Parcelable {
 
     public void setImageResourceIds(int[] imageResourceIds) {
         this.imageResourceIds = imageResourceIds;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     public String getTitle() {
@@ -61,21 +78,22 @@ public class Article implements ListItem, Parcelable {
         this.content = content;
     }
 
-    private String content;
-
     //temp
     public Article(String title, String content) {
         this.title = title;
         this.content = content;
         categoryId = 0;
         imageResourceIds = new int[0];
+        favorite = false;
+        id = UUID.randomUUID().toString();
     }
 
-    public Article(int[] imageResourceIds, String title, int categoryId, String content) {
+    public Article(int[] imageResourceIds, String title, int categoryId, String content, boolean favorite) {
         this.imageResourceIds = imageResourceIds;
         this.title = title;
         this.categoryId = categoryId;
         this.content = content;
+        this.favorite = favorite;
     }
 
     @Override
@@ -90,39 +108,45 @@ public class Article implements ListItem, Parcelable {
         View view;
         if (convertView == null) {
             view = (View) inflater.inflate(R.layout.article_list_item, null);
-            final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
-            final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            final int width = displayMetrics.widthPixels;
-            for (int resource : imageResourceIds) {
-                addImage(inflater, view, mGallery, resource, width);
-            }
-            ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
-            btnLeft.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()-width);
-                    animator.setDuration(360);
-                    animator.start();
-                }
-            });
-            ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
-            btnRight.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()+width);
-                    animator.setDuration(360);
-                    animator.start();
-                }
-            });
             Button btnOpen = (Button) view.findViewById(R.id.btnArticleListOpen);
+            if (imageResourceIds != null && imageResourceIds.length > 0) {
+                final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
+                final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                final int width = displayMetrics.widthPixels;
+                for (int resource : imageResourceIds) {
+                    addImage(inflater, view, mGallery, resource, width);
+                }
+                if (imageResourceIds.length > 1) {
+                    ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
+                    ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
+                    btnLeft.setVisibility(View.VISIBLE);
+                    btnRight.setVisibility(View.VISIBLE);
+                    btnLeft.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() - width);
+                            animator.setDuration(360);
+                            animator.start();
+                        }
+                    });
+                    btnRight.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() + width);
+                            animator.setDuration(360);
+                            animator.start();
+                        }
+                    });
+                }
+            }
             btnOpen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
                     intent.putExtra(ARTICLE, article);
-                    inflater.getContext().startActivity(intent);
+                    ((Activity) inflater.getContext()).startActivityForResult(intent, 0);
                 }
             });
         } else {
@@ -156,12 +180,20 @@ public class Article implements ListItem, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        int images = imageResourceIds.length;
+        int images = 0;
+        if (imageResourceIds != null) {
+             images = imageResourceIds.length;
+        } else {
+            imageResourceIds = new int[0];
+        }
         dest.writeInt(images);
         dest.writeIntArray(imageResourceIds);
         dest.writeString(title);
         dest.writeInt(categoryId);
         dest.writeString(content);
+        boolean[] favorite_data = {favorite};
+        dest.writeBooleanArray(favorite_data);
+        dest.writeString(id);
     }
 
     private Article(Parcel in) {
@@ -171,6 +203,10 @@ public class Article implements ListItem, Parcelable {
         title = in.readString();
         categoryId = in.readInt();
         content = in.readString();
+        boolean[] favorite_data = new boolean[1];
+        in.readBooleanArray(favorite_data);
+        favorite = favorite_data[0];
+        id = in.readString();
     }
 
     public static final Parcelable.Creator<Article> CREATOR

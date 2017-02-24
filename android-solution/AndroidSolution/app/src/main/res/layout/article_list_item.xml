@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#000">
+    android:background="#103060">
 
     <HorizontalScrollView
         android:id="@+id/small_scroller"
@@ -19,27 +19,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:padding="12dp"
-        android:background="#80000000">
+        android:padding="16dp"
+        android:background="#00000000">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.1">
+            <TextView
+                android:id="@+id/txtArticleListItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:paddingBottom="2dp"
+                android:textColor="#ffffffff"
+                android:text="I wanna be the very best"/>
+            <TextView
+                android:id="@+id/txtArticleListItemPreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#ffffffff"
+                android:text="Like no one ever was. To catch them is my real test. To train them is my cause." />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9" />
 
-        <TextView
-            android:id="@+id/txtArticleListItemTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:paddingBottom="4dp"
-            android:textColor="#ffffffff"
-            android:text="I wanna be the very best"/>
 
-        <TextView
-            android:id="@+id/txtArticleListItemPreview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#ffffffff"
-            android:text="Like no one ever was. To catch them is my real test. To train them is my cause." />
 
     </LinearLayout>
 
@@ -53,7 +62,8 @@
             android:layout_weight="0.25"
             android:layout_gravity="center"
             android:src="@drawable/arrow_left"
-            android:background="#00000000" />
+            android:background="#00000000"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/btnArticleListOpen"
             android:layout_width="0dp"
@@ -67,7 +77,8 @@
             android:layout_weight="0.25"
             android:layout_gravity="center"
             android:src="@drawable/arrow_right"
-            android:background="#00000000" />
+            android:background="#00000000"
+            android:visibility="gone"/>
     </LinearLayout>
 
 

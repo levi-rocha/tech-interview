@@ -9,4 +9,5 @@
     <string name="drawer_title">Menu</string>
     <string name="home_title">Digital Space</string>
     <string name="joyjet">JOYJET</string>
+    <string name="favorited">Article saved to Favorites</string>
 </resources>
