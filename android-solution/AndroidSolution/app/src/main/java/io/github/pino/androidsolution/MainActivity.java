@@ -130,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectMenuItem(int position) {
-        // TODO: change activities
-
+        if (position == 1) {
+            // TODO: change to Favorites
+        }
     }
 
     @Override
