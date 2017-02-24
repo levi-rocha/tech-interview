@@ -14,6 +14,10 @@ public class JoyjetApplication extends Application {
 
     private HashMap<String, Article> articles = new HashMap<String, Article>();
 
+    public void resetArticles() {
+        articles = new HashMap<String, Article>();
+    }
+
     public List<Article> getArticles() {
         List<Article> data = new ArrayList<Article>();
         for (Article article : articles.values()) {

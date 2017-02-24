@@ -1,6 +1,7 @@
 package io.github.pino.androidsolution;
 
 import android.animation.ObjectAnimator;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class ArticleActivity extends AppCompatActivity {
         article = this.getIntent().getParcelableExtra(ARTICLE);
         final HorizontalScrollView mScroller = (HorizontalScrollView) findViewById(R.id.scroller);
         int[] imageResourceIds = article.getImageResourceIds();
+        final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
         if (imageResourceIds != null && imageResourceIds.length > 0) {
             final LinearLayout mGallery = (LinearLayout) findViewById(R.id.gallery);
             DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -34,6 +36,7 @@ public class ArticleActivity extends AppCompatActivity {
             for (int resource : article.getImageResourceIds()) {
                 addImage(mGallery, resource, width);
             }
+            mFavorite.getDrawable().setColorFilter(0xcccccc00, PorterDuff.Mode.MULTIPLY);
             if (imageResourceIds.length > 1) {
                 ImageView btnLeft = (ImageView) findViewById(R.id.btnArticleLeft);
                 ImageView btnRight = (ImageView) findViewById(R.id.btnArticleRight);
@@ -59,7 +62,6 @@ public class ArticleActivity extends AppCompatActivity {
         } else {
             mScroller.setVisibility(GONE);
         }
-        final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
         if (article.isFavorite()) {
             mFavorite.setVisibility(GONE);
         } else {

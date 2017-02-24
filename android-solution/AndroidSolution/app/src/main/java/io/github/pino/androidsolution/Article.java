@@ -94,6 +94,7 @@ public class Article implements ListItem, Parcelable {
         this.categoryId = categoryId;
         this.content = content;
         this.favorite = favorite;
+        id = UUID.randomUUID().toString();
     }
 
     @Override
