@@ -15,15 +15,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.UUID;
 
-import static io.github.pino.androidsolution.MainActivity.ARTICLE;
+import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
 
 /**
  * Created by nadaaver on 2017-02-23.
  */
 
-public class Article implements ListItem, Parcelable {
+public class Article implements ListItem, Parcelable, Comparable<Article> {
 
     public static final int MAX_IMAGES = 7;
 
@@ -33,50 +36,7 @@ public class Article implements ListItem, Parcelable {
     private String content;
     private boolean favorite;
     private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public int[] getImageResourceIds() {
-        return imageResourceIds;
-    }
-
-    public void setImageResourceIds(int[] imageResourceIds) {
-        this.imageResourceIds = imageResourceIds;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    private String date;
 
     //temp
     public Article(String title, String content) {
@@ -86,6 +46,7 @@ public class Article implements ListItem, Parcelable {
         imageResourceIds = new int[0];
         favorite = false;
         id = UUID.randomUUID().toString();
+        date = DateFormat.getDateTimeInstance().format(new Date());
     }
 
     public Article(int[] imageResourceIds, String title, int categoryId, String content, boolean favorite) {
@@ -95,10 +56,21 @@ public class Article implements ListItem, Parcelable {
         this.content = content;
         this.favorite = favorite;
         id = UUID.randomUUID().toString();
+        date = DateFormat.getDateTimeInstance().format(new Date());
+    }
+
+    public Article(int[] imageResourceIds, String title, int categoryId, String content, boolean favorite, String date) {
+        this.imageResourceIds = imageResourceIds;
+        this.title = title;
+        this.categoryId = categoryId;
+        this.content = content;
+        this.favorite = favorite;
+        id = UUID.randomUUID().toString();
+        this.date = date;
     }
 
     @Override
-    public int isHeader() {
+    public int isListHeaderItem() {
         return 0;
     }
 
@@ -147,7 +119,9 @@ public class Article implements ListItem, Parcelable {
                 public void onClick(View v) {
                     Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
                     intent.putExtra(ARTICLE, article);
-                    ((Activity) inflater.getContext()).startActivityForResult(intent, 0);
+                    Activity parent = (Activity)inflater.getContext();
+                    parent.startActivity(intent);
+                    //parent.finish();
                 }
             });
         } else {
@@ -173,7 +147,6 @@ public class Article implements ListItem, Parcelable {
         mGallery.addView(imageView);
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -195,6 +168,7 @@ public class Article implements ListItem, Parcelable {
         boolean[] favorite_data = {favorite};
         dest.writeBooleanArray(favorite_data);
         dest.writeString(id);
+        dest.writeString(date);
     }
 
     private Article(Parcel in) {
@@ -208,6 +182,7 @@ public class Article implements ListItem, Parcelable {
         in.readBooleanArray(favorite_data);
         favorite = favorite_data[0];
         id = in.readString();
+        date = in.readString();
     }
 
     public static final Parcelable.Creator<Article> CREATOR
@@ -226,4 +201,75 @@ public class Article implements ListItem, Parcelable {
             return new Article[size];
         }
     };
+
+    @Override
+    public int compareTo(Article o) {
+        DateFormat format = DateFormat.getDateInstance();
+        try {
+            Date myDate = format.parse(date);
+            Date theirDate = format.parse(o.getDate());
+            if (myDate.after(theirDate)) {
+                return 1;
+            } else if (myDate.before(theirDate)){
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (ParseException e) {
+            return 0;
+        }
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public int[] getImageResourceIds() {
+        return imageResourceIds;
+    }
+
+    public void setImageResourceIds(int[] imageResourceIds) {
+        this.imageResourceIds = imageResourceIds;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

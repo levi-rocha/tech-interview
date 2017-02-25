@@ -9,7 +9,7 @@ import android.view.View;
 
 public interface ListItem {
 
-    public int isHeader();
+    public int isListHeaderItem();
     public View getListItemView(LayoutInflater inflater, View convertView);
 
 }

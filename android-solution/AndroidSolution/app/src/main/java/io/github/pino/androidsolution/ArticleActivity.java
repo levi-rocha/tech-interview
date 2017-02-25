@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.view.View.GONE;
-import static io.github.pino.androidsolution.MainActivity.ARTICLE;
+import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
 
 public class ArticleActivity extends AppCompatActivity {
 

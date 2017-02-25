@@ -27,7 +27,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<ListItem> {
 
     @Override
     public int getItemViewType(int position) {
-        return getItem(position).isHeader();
+        return getItem(position).isListHeaderItem();
     }
 
     @Override

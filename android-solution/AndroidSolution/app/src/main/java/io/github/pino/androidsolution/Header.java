@@ -17,7 +17,7 @@ public class Header implements ListItem {
     }
 
     @Override
-    public int isHeader() {
+    public int isListHeaderItem() {
         return 1;
     }
 
