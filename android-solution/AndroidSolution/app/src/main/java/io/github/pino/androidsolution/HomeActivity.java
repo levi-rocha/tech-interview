@@ -1,15 +1,8 @@
 package io.github.pino.androidsolution;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 public class HomeActivity extends ArticleListActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        updateArticles();
-    }
 
     @Override
     public void onBackPressed() {

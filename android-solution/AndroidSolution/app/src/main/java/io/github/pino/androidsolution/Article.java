@@ -3,9 +3,7 @@ package io.github.pino.androidsolution;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.v4.content.res.ResourcesCompat;
+import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +16,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
@@ -26,11 +25,9 @@ import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
  * Created by nadaaver on 2017-02-23.
  */
 
-public class Article implements ListItem, Parcelable, Comparable<Article> {
+public class Article implements ListItem, Comparable<Article> {
 
-    public static final int MAX_IMAGES = 7;
-
-    private int[] imageResourceIds;
+    private List<Bitmap> gallery;
     private String title;
     private int categoryId;
     private String content;
@@ -38,35 +35,14 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
     private String id;
     private String date;
 
-    //temp
-    public Article(String title, String content) {
-        this.title = title;
-        this.content = content;
-        categoryId = 0;
-        imageResourceIds = new int[0];
-        favorite = false;
-        id = UUID.randomUUID().toString();
-        date = DateFormat.getDateTimeInstance().format(new Date());
-    }
-
-    public Article(int[] imageResourceIds, String title, int categoryId, String content, boolean favorite) {
-        this.imageResourceIds = imageResourceIds;
+    public Article(List<Bitmap> gallery, String title, int categoryId, String content, boolean favorite) {
+        this.gallery = gallery;
         this.title = title;
         this.categoryId = categoryId;
         this.content = content;
         this.favorite = favorite;
         id = UUID.randomUUID().toString();
         date = DateFormat.getDateTimeInstance().format(new Date());
-    }
-
-    public Article(int[] imageResourceIds, String title, int categoryId, String content, boolean favorite, String date) {
-        this.imageResourceIds = imageResourceIds;
-        this.title = title;
-        this.categoryId = categoryId;
-        this.content = content;
-        this.favorite = favorite;
-        id = UUID.randomUUID().toString();
-        this.date = date;
     }
 
     @Override
@@ -82,16 +58,16 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
         if (convertView == null) {
             view = (View) inflater.inflate(R.layout.article_list_item, null);
             Button btnOpen = (Button) view.findViewById(R.id.btnArticleListOpen);
-            if (imageResourceIds != null && imageResourceIds.length > 0) {
+            if (gallery.size() > 0) {
                 final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
                 final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 final int width = displayMetrics.widthPixels;
-                for (int resource : imageResourceIds) {
-                    addImage(inflater, view, mGallery, resource, width);
+                for (Bitmap image : gallery) {
+                    addImage(inflater, mGallery, image, width);
                 }
-                if (imageResourceIds.length > 1) {
+                if (gallery.size() > 1) {
                     ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
                     ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
                     btnLeft.setVisibility(View.VISIBLE);
@@ -118,10 +94,9 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
-                    intent.putExtra(ARTICLE, article);
+                    intent.putExtra(ARTICLE, article.getId());
                     Activity parent = (Activity)inflater.getContext();
                     parent.startActivity(intent);
-                    //parent.finish();
                 }
             });
         } else {
@@ -139,68 +114,13 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
         return view;
     }
 
-    private void addImage(LayoutInflater inflater, View view, LinearLayout mGallery, int drawable, int width) {
+    private void addImage(LayoutInflater inflater, LinearLayout mGallery, Bitmap image, int width) {
         ImageView imageView = new ImageView(inflater.getContext());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageDrawable(ResourcesCompat.getDrawable(view.getResources(), drawable, null));
+        imageView.setImageBitmap(image);
         mGallery.addView(imageView);
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        int images = 0;
-        if (imageResourceIds != null) {
-             images = imageResourceIds.length;
-        } else {
-            imageResourceIds = new int[0];
-        }
-        dest.writeInt(images);
-        dest.writeIntArray(imageResourceIds);
-        dest.writeString(title);
-        dest.writeInt(categoryId);
-        dest.writeString(content);
-        boolean[] favorite_data = {favorite};
-        dest.writeBooleanArray(favorite_data);
-        dest.writeString(id);
-        dest.writeString(date);
-    }
-
-    private Article(Parcel in) {
-        int images = in.readInt();
-        imageResourceIds = new int[images];
-        in.readIntArray(imageResourceIds);
-        title = in.readString();
-        categoryId = in.readInt();
-        content = in.readString();
-        boolean[] favorite_data = new boolean[1];
-        in.readBooleanArray(favorite_data);
-        favorite = favorite_data[0];
-        id = in.readString();
-        date = in.readString();
-    }
-
-    public static final Parcelable.Creator<Article> CREATOR
-            = new Parcelable.Creator<Article>() {
-
-        // This simply calls our new constructor (typically private) and
-        // passes along the unmarshalled `Parcel`, and then returns the new object!
-        @Override
-        public Article createFromParcel(Parcel in) {
-            return new Article(in);
-        }
-
-        // We just need to copy this and change the type to match our class.
-        @Override
-        public Article[] newArray(int size) {
-            return new Article[size];
-        }
-    };
 
     @Override
     public int compareTo(Article o) {
@@ -220,6 +140,10 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
         }
     }
 
+    public List<Bitmap> getGallery() {
+        return gallery;
+    }
+
     public String getDate() {
         return date;
     }
@@ -232,14 +156,6 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
         return id;
     }
 
-    public int[] getImageResourceIds() {
-        return imageResourceIds;
-    }
-
-    public void setImageResourceIds(int[] imageResourceIds) {
-        this.imageResourceIds = imageResourceIds;
-    }
-
     public boolean isFavorite() {
         return favorite;
     }
@@ -250,10 +166,6 @@ public class Article implements ListItem, Parcelable, Comparable<Article> {
 
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public int getCategoryId() {

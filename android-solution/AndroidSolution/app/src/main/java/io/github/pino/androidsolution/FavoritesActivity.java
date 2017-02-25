@@ -1,18 +1,11 @@
 package io.github.pino.androidsolution;
 
-import android.os.Bundle;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritesActivity extends ArticleListActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        updateArticles();
-    }
 
     @Override
     protected void updateArticles() {

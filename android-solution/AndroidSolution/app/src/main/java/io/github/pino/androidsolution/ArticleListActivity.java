@@ -2,6 +2,7 @@ package io.github.pino.androidsolution;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article_list);
         initActionBar();
         initMenu();
+        setFonts();
         updateArticles();
     }
 
@@ -95,6 +98,14 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         mMenu.addDrawerListener(mDrawerToggle);
     }
 
+    protected void setFonts() {
+        TextView txtJoyjet = (TextView)findViewById(R.id.txtJoyjet);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Bold.otf");
+        txtJoyjet.setTypeface(custom_font);
+        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Thin.otf");
+
+    }
+
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,7 +121,6 @@ public abstract class ArticleListActivity extends AppCompatActivity {
                     mMenu.closeDrawer(Gravity.LEFT);
                     intent = new Intent(this, HomeActivity.class);
                     startActivity(intent);
-                    //finish();
                 } else {
                     mMenu.closeDrawer(Gravity.LEFT);
                 }
@@ -120,7 +130,6 @@ public abstract class ArticleListActivity extends AppCompatActivity {
                     mMenu.closeDrawer(Gravity.LEFT);
                     intent = new Intent(this, FavoritesActivity.class);
                     startActivity(intent);
-                    //finish();
                 } else {
                     mMenu.closeDrawer(Gravity.LEFT);
                 }

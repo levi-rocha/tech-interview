@@ -6,8 +6,8 @@ package io.github.pino.androidsolution;
 
 public enum Category {
 
-    MYLIFE("My Life"),
-    PLACES("Places");
+    PLACES("places"),
+    MYLIFE("my life");
 
     private final String categoryText;
 

@@ -24,7 +24,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:background="#5070C0">
+            android:background="#4a90e2">
             <ImageView
                 android:layout_width="130dp"
                 android:layout_height="110dp"
@@ -38,6 +38,7 @@
                 android:padding="12dp"
                 android:textSize="24sp"
                 android:textColor="#ffffff"
+                android:id="@+id/txtJoyjet"
                 android:text="@string/joyjet"/>
         </FrameLayout>
         <ListView android:id="@+id/left_drawer_list"

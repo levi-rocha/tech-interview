@@ -1,9 +1,9 @@
 package io.github.pino.androidsolution;
 
 import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import static android.view.View.GONE;
 import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
@@ -24,20 +26,21 @@ public class ArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-        article = this.getIntent().getParcelableExtra(ARTICLE);
+        String articleid = this.getIntent().getStringExtra(ARTICLE);
+        article = ((JoyjetApplication) getApplication()).getArticleById(articleid);
         final HorizontalScrollView mScroller = (HorizontalScrollView) findViewById(R.id.scroller);
-        int[] imageResourceIds = article.getImageResourceIds();
+        List<Bitmap> gallery = article.getGallery();
         final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
-        if (imageResourceIds != null && imageResourceIds.length > 0) {
+        if (gallery.size() > 0) {
             final LinearLayout mGallery = (LinearLayout) findViewById(R.id.gallery);
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             final int width = displayMetrics.widthPixels;
-            for (int resource : article.getImageResourceIds()) {
-                addImage(mGallery, resource, width);
+            for (Bitmap image : gallery) {
+                addImage(mGallery, image, width);
             }
             mFavorite.getDrawable().setColorFilter(0xcccccc00, PorterDuff.Mode.MULTIPLY);
-            if (imageResourceIds.length > 1) {
+            if (gallery.size() > 1) {
                 ImageView btnLeft = (ImageView) findViewById(R.id.btnArticleLeft);
                 ImageView btnRight = (ImageView) findViewById(R.id.btnArticleRight);
                 btnLeft.setVisibility(View.VISIBLE);
@@ -82,11 +85,11 @@ public class ArticleActivity extends AppCompatActivity {
         txtContent.setText(article.getContent());
     }
 
-    private void addImage(LinearLayout mGallery, int drawable, int width) {
+    private void addImage(LinearLayout mGallery, Bitmap image, int width) {
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), drawable, null));
+        imageView.setImageBitmap(image);
         mGallery.addView(imageView);
     }
 }

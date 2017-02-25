@@ -1,5 +1,6 @@
 package io.github.pino.androidsolution;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +33,8 @@ public class Header implements ListItem {
         }
         TextView txtHeaderTitle = (TextView) view.findViewById(R.id.txtHeaderTitle);
         txtHeaderTitle.setText(title);
+        Typeface custom_font = Typeface.createFromAsset(inflater.getContext().getAssets(),  "fonts/Montserrat-SemiBold.otf");
+        txtHeaderTitle.setTypeface(custom_font);
         return view;
     }
 }
