@@ -5,7 +5,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,14 +14,14 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#5070C0">
             <HorizontalScrollView
                 android:id="@+id/scroller"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
                 <LinearLayout
-                    android:id="@+id/imageUrls"
+                    android:id="@+id/gallery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -39,7 +39,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/arrow_left"
                     android:background="#00000000"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:contentDescription="scroll left"/>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -62,20 +63,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:paddingTop="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="16dp">
             <TextView
                 android:id="@+id/txtArticleItemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:paddingBottom="4dp"
-                android:textColor="#000"/>
+                android:textSize="28sp"
+                android:paddingBottom="2dp"
+                android:textColor="#555"/>
+            <TextView
+                android:id="@+id/txtArticleItemCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:paddingBottom="12dp"
+                android:textColor="#4a90e2"/>
             <TextView
                 android:id="@+id/txtArticleContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="#000" />
+                android:textSize="18sp"
+                android:textColor="#555" />
         </LinearLayout>
     </LinearLayout>
 

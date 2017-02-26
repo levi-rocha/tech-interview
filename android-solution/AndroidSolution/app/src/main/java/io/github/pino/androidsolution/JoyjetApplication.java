@@ -13,6 +13,8 @@ import java.util.List;
 
 public class JoyjetApplication extends Application {
 
+    private boolean loaded = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -46,6 +48,14 @@ public class JoyjetApplication extends Application {
             articles.remove(id);
             articles.put(id, replacement);
         }
+    }
+
+    public void setLoaded(boolean loaded) {
+        this.loaded = loaded;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 
 }

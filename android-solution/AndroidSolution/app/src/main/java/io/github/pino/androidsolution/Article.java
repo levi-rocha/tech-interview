@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,24 +22,20 @@ import java.util.UUID;
 
 import static io.github.pino.androidsolution.ArticleListActivity.ARTICLE;
 
-/**
- * Created by nadaaver on 2017-02-23.
- */
-
 public class Article implements ListItem, Comparable<Article> {
 
     private List<Bitmap> gallery;
     private String title;
-    private int categoryId;
+    private String category;
     private String content;
     private boolean favorite;
     private String id;
     private String date;
 
-    public Article(List<Bitmap> gallery, String title, int categoryId, String content, boolean favorite) {
+    public Article(List<Bitmap> gallery, String title, String category, String content, boolean favorite) {
         this.gallery = gallery;
         this.title = title;
-        this.categoryId = categoryId;
+        this.category = category;
         this.content = content;
         this.favorite = favorite;
         id = UUID.randomUUID().toString();
@@ -53,63 +50,70 @@ public class Article implements ListItem, Comparable<Article> {
     @Override
     public View getListItemView(final LayoutInflater inflater, View convertView) {
         final Article article = this;
-        //TODO layouts
         View view;
+        /*
         if (convertView == null) {
             view = (View) inflater.inflate(R.layout.article_list_item, null);
-            Button btnOpen = (Button) view.findViewById(R.id.btnArticleListOpen);
-            if (gallery.size() > 0) {
-                final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
-                final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                final int width = displayMetrics.widthPixels;
-                for (Bitmap image : gallery) {
-                    addImage(inflater, mGallery, image, width);
-                }
-                if (gallery.size() > 1) {
-                    ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
-                    ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
-                    btnLeft.setVisibility(View.VISIBLE);
-                    btnRight.setVisibility(View.VISIBLE);
-                    btnLeft.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() - width);
-                            animator.setDuration(360);
-                            animator.start();
-                        }
-                    });
-                    btnRight.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() + width);
-                            animator.setDuration(360);
-                            animator.start();
-                        }
-                    });
-                }
-            }
-            btnOpen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
-                    intent.putExtra(ARTICLE, article.getId());
-                    Activity parent = (Activity)inflater.getContext();
-                    parent.startActivity(intent);
-                }
-            });
         } else {
             view = convertView;
         }
+        */
+        view = (View) inflater.inflate(R.layout.article_list_item, null);
+        if (gallery.size() > 0) {
+            final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
+            final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            final int width = displayMetrics.widthPixels;
+            for (Bitmap image : gallery) {
+                addImage(inflater, mGallery, image, width);
+            }
+            if (gallery.size() > 1) {
+                ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
+                ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
+                btnLeft.setVisibility(View.VISIBLE);
+                btnRight.setVisibility(View.VISIBLE);
+                btnLeft.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() - width);
+                        animator.setDuration(360);
+                        animator.start();
+                    }
+                });
+                btnRight.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() + width);
+                        animator.setDuration(360);
+                        animator.start();
+                    }
+                });
+            }
+        }
+        Button btnOpen = (Button) view.findViewById(R.id.btnArticleListOpen);
+        btnOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(inflater.getContext(), ArticleActivity.class);
+                intent.putExtra(ARTICLE, article.getId());
+                System.out.println(article.getTitle() + " clicked ");
+                Activity parent = (Activity)inflater.getContext();
+                parent.startActivity(intent);
+            }
+        });
         TextView txtTitle = (TextView) view.findViewById(R.id.txtArticleListItemTitle);
         txtTitle.setText(this.title);
+        Typeface custom_font = Typeface.createFromAsset(inflater.getContext().getAssets(),  "fonts/Montserrat-SemiBold.otf");
+        txtTitle.setTypeface(custom_font);
         TextView txtPreview = (TextView) view.findViewById(R.id.txtArticleListItemPreview);
         if (content.length() > 60) {
             txtPreview.setText(content.substring(0, 60) + "...");
         } else {
             txtPreview.setText(content);
         }
+        custom_font = Typeface.createFromAsset(inflater.getContext().getAssets(),  "fonts/Montserrat-Regular.otf");
+        txtPreview.setTypeface(custom_font);
 
         return view;
     }
@@ -168,12 +172,12 @@ public class Article implements ListItem, Comparable<Article> {
         return title;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getContent() {

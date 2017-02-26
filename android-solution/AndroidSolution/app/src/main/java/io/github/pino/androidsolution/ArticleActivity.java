@@ -3,6 +3,7 @@ package io.github.pino.androidsolution;
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -81,8 +82,15 @@ public class ArticleActivity extends AppCompatActivity {
         }
         TextView txtTitle = (TextView) findViewById(R.id.txtArticleItemTitle);
         txtTitle.setText(article.getTitle());
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-SemiBold.otf");
+        txtTitle.setTypeface(custom_font);
+        TextView txtCategory = (TextView) findViewById(R.id.txtArticleItemCategory);
+        txtCategory.setText(article.getCategory());
+        txtCategory.setTypeface(custom_font);
         TextView txtContent = (TextView) findViewById(R.id.txtArticleContent);
         txtContent.setText(article.getContent());
+        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.otf");
+        txtContent.setTypeface(custom_font);
     }
 
     private void addImage(LinearLayout mGallery, Bitmap image, int width) {

@@ -33,15 +33,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:paddingBottom="2dp"
-                android:textColor="#ffffffff"
-                android:text="I wanna be the very best"/>
+                android:textColor="#ffffffff"/>
             <TextView
                 android:id="@+id/txtArticleListItemPreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="#ffffffff"
-                android:text="Like no one ever was. To catch them is my real test. To train them is my cause." />
+                android:textColor="#ffffffff"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,6 +65,7 @@
         <Button
             android:id="@+id/btnArticleListOpen"
             android:layout_width="0dp"
+            android:padding="10dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:background="#00000000"/>

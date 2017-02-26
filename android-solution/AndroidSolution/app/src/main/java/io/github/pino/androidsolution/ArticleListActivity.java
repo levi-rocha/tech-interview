@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ArticleListActivity extends AppCompatActivity {
@@ -42,11 +43,18 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         JoyjetApplication appState = ((JoyjetApplication) this.getApplication());
         List<ListItem> items = new ArrayList<ListItem>();
         List<Article> articles = appState.getArticles();
-        Category[] categories = Category.values();
-        for (Category category : categories) {
-            items.add(new Header(category.toString()));
+        List<String> categories = new ArrayList<String>();
+        for (int i = 0; i < articles.size(); i ++) {
+            String thisCat = articles.get(i).getCategory();
+            if (!categories.contains(thisCat)) {
+                categories.add(thisCat);
+            }
+        }
+        Collections.sort(categories);
+        for (String category : categories) {
+            items.add(new Header(category));
             for (Article article : articles) {
-                if (article.getCategoryId() == category.ordinal()) {
+                if (category.equals(article.getCategory())) {
                     items.add(article);
                 }
             }
@@ -102,7 +110,6 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         TextView txtJoyjet = (TextView)findViewById(R.id.txtJoyjet);
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Bold.otf");
         txtJoyjet.setTypeface(custom_font);
-        custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Thin.otf");
 
     }
 
