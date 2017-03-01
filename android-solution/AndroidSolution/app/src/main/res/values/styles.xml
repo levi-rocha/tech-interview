@@ -1,11 +1,23 @@
 <resources>
+        <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+            <item name="android:actionBarStyle">@style/myActionBar</item>
+            <item name="actionBarStyle">@style/myActionBar</item>
+            <item name="colorPrimaryDark">@color/joyjetBlue</item>
+        </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
+        <style name="myActionBar" parent="@style/Widget.AppCompat.ActionBar">
+            <item name="android:titleTextStyle">@style/myActionBar.TitleTextStyle</item>
+            <item name="titleTextStyle">@style/myActionBar.TitleTextStyle</item>
+            <item name="android:homeAsUpIndicator">@drawable/ic_menu</item>
+            <item name="homeAsUpIndicator">@drawable/ic_menu</item>
+        </style>
+
+        <style name="myActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+            <item name="android:textColor">@color/joyjetBlue</item>
+        </style>
+
+        <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+            <item name="colorPrimaryDark">@color/joyjetBlue</item>
+        </style>
 
 </resources>
