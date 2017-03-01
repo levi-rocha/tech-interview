@@ -29,6 +29,11 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
         String articleid = this.getIntent().getStringExtra(ARTICLE);
         article = ((JoyjetApplication) getApplication()).getArticleById(articleid);
+        initGallery();
+        initText();
+    }
+
+    private void initGallery() {
         final HorizontalScrollView mScroller = (HorizontalScrollView) findViewById(R.id.scroller);
         List<Bitmap> gallery = article.getGallery();
         final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
@@ -80,6 +85,17 @@ public class ArticleActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void addImage(LinearLayout mGallery, Bitmap image, int width) {
+        ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setImageBitmap(image);
+        mGallery.addView(imageView);
+    }
+
+    private void initText() {
         TextView txtTitle = (TextView) findViewById(R.id.txtArticleItemTitle);
         txtTitle.setText(article.getTitle());
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-SemiBold.otf");
@@ -91,13 +107,5 @@ public class ArticleActivity extends AppCompatActivity {
         txtContent.setText(article.getContent());
         custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Regular.otf");
         txtContent.setTypeface(custom_font);
-    }
-
-    private void addImage(LinearLayout mGallery, Bitmap image, int width) {
-        ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageBitmap(image);
-        mGallery.addView(imageView);
     }
 }

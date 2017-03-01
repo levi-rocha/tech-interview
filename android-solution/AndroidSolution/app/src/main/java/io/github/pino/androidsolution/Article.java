@@ -42,6 +42,8 @@ public class Article implements ListItem, Comparable<Article> {
         date = DateFormat.getDateTimeInstance().format(new Date());
     }
 
+    /* List Item interface */
+
     @Override
     public int isListHeaderItem() {
         return 0;
@@ -50,15 +52,7 @@ public class Article implements ListItem, Comparable<Article> {
     @Override
     public View getListItemView(final LayoutInflater inflater, View convertView) {
         final Article article = this;
-        View view;
-        /*
-        if (convertView == null) {
-            view = (View) inflater.inflate(R.layout.article_list_item, null);
-        } else {
-            view = convertView;
-        }
-        */
-        view = (View) inflater.inflate(R.layout.article_list_item, null);
+        View view = (View) inflater.inflate(R.layout.article_list_item, null);
         if (gallery.size() > 0) {
             final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
             final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
@@ -126,6 +120,8 @@ public class Article implements ListItem, Comparable<Article> {
         mGallery.addView(imageView);
     }
 
+    /* Comparable interface */
+
     @Override
     public int compareTo(Article o) {
         DateFormat format = DateFormat.getDateInstance();
@@ -143,6 +139,8 @@ public class Article implements ListItem, Comparable<Article> {
             return 0;
         }
     }
+
+    /* Getters and setters */
 
     public List<Bitmap> getGallery() {
         return gallery;

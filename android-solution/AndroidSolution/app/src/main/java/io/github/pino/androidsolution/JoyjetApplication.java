@@ -8,23 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by nadaaver on 2017-02-24.
+ * Stores articles after load
  */
-
 public class JoyjetApplication extends Application {
 
-    private boolean loaded = false;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     private HashMap<String, Article> articles = new HashMap<String, Article>();
-
-    public void resetArticles() {
-        articles = new HashMap<String, Article>();
-    }
+    private boolean loaded = false;
 
     public List<Article> getArticles() {
         List<Article> data = new ArrayList<Article>();

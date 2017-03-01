@@ -18,12 +18,16 @@ public class HomeActivity extends ArticleListActivity {
 
     @Override
     public void onBackPressed() {
+        // Close app on back press
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
+    /**
+     * Refresh the list of articles
+     */
     public void refresh() {
         updateArticles();
     }

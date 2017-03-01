@@ -48,6 +48,7 @@ public class ArticleLoader extends AsyncTask<String, String, List<Article>> {
         String inputUrl = params[0];
         List<Article> articles = new ArrayList<Article>();
         try {
+            // Fetch JSON
             InputStream inputStream = new URL(inputUrl).openStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuffer buffer = new StringBuffer();
@@ -57,6 +58,7 @@ public class ArticleLoader extends AsyncTask<String, String, List<Article>> {
             }
             inputStream.close();
             int done = 0;
+            // Parse JSON
             JSONArray jArray = new JSONArray(buffer.toString());
             for(int i = 0; i < jArray.length(); i++) {
                 JSONObject fullObject = jArray.getJSONObject(i);
@@ -67,6 +69,7 @@ public class ArticleLoader extends AsyncTask<String, String, List<Article>> {
                     String title = itemObject.getString("title");
                     String content = itemObject.getString("description");
                     List<Bitmap> gallery = new ArrayList<Bitmap>();
+                    // Fetch all images into gallery
                     JSONArray urlArray = itemObject.getJSONArray("galery");
                     for (int k = 0; k < urlArray.length(); k++) {
                         String url = urlArray.getString(k);

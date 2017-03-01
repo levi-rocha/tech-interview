@@ -6,9 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * Created by nadaaver on 2017-02-23.
+ * Header list item for categories
  */
-
 public class Header implements ListItem {
 
     private String title;
@@ -24,7 +23,6 @@ public class Header implements ListItem {
 
     @Override
     public View getListItemView(LayoutInflater inflater, View convertView) {
-        //TODO layouts
         View view;
         if (convertView == null) {
             view = inflater.inflate(R.layout.header, null);

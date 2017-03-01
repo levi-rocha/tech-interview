@@ -40,11 +40,28 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         updateArticles();
     }
 
+    /* Refresh list on resume and restart */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateArticles();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateArticles();
+    }
+
+    /* List setup */
+
     protected void updateArticles() {
         JoyjetApplication appState = ((JoyjetApplication) this.getApplication());
         List<ListItem> items = new ArrayList<ListItem>();
         List<Article> articles = appState.getArticles();
         List<String> categories = new ArrayList<String>();
+        // Get the categories and their order first
         for (int i = 0; i < articles.size(); i ++) {
             String thisCat = articles.get(i).getCategory();
             if (!categories.contains(thisCat)) {
@@ -52,6 +69,7 @@ public abstract class ArticleListActivity extends AppCompatActivity {
             }
         }
         Collections.sort(categories);
+        // Display feed under categories
         for (String category : categories) {
             items.add(new Header(category));
             for (Article article : articles) {
@@ -173,17 +191,5 @@ public abstract class ArticleListActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateArticles();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        updateArticles();
     }
 }

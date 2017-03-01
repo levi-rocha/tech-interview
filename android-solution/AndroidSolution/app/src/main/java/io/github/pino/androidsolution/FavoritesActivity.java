@@ -29,6 +29,7 @@ public class FavoritesActivity extends ArticleListActivity {
     @Override
     protected void initActionBar() {
         super.initActionBar();
+        // Display favorites title
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.favorites_title);
     }
@@ -36,29 +37,18 @@ public class FavoritesActivity extends ArticleListActivity {
     @Override
     protected void initMenu() {
         super.initMenu();
+        // Override drawer menu setup to display favorites title
         mMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mMenu,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
-        ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
+        mDrawerToggle = new ActionBarDrawerToggle(this, mMenu, R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle(R.string.favorites_title);
             }
-
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(R.string.drawer_title);
             }
         };
-
-        // Set the drawer toggle as the DrawerListener
         mMenu.addDrawerListener(mDrawerToggle);
     }
 }
