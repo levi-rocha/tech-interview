@@ -34,10 +34,10 @@ public abstract class ArticleListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
-        initActionBar();
-        initMenu();
-        setFonts();
         updateArticles();
+        initActionBar();
+        setFonts();
+        initMenu();
     }
 
     /* Refresh list on resume and restart */
@@ -92,45 +92,37 @@ public abstract class ArticleListActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
     }
 
-    protected void initMenu() {
-        mMenuListItems = getResources().getStringArray(R.array.drawer_array);
-        mMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mMenuList = (ListView) findViewById(R.id.left_drawer_list);
-
-        // Set up menu list
-        mMenuList.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mMenuListItems));
-        mMenuList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mMenu,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
-        ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(R.string.home_title);
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.drawer_title);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mMenu.addDrawerListener(mDrawerToggle);
-    }
-
     protected void setFonts() {
         TextView txtJoyjet = (TextView)findViewById(R.id.txtJoyjet);
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Montserrat-Bold.otf");
         txtJoyjet.setTypeface(custom_font);
 
+    }
+
+    protected void initMenu() {
+        mMenuListItems = getResources().getStringArray(R.array.drawer_array);
+        mMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mMenuList = (ListView) findViewById(R.id.left_drawer_list);
+
+        // Menu list
+        mMenuList.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, mMenuListItems));
+        mMenuList.setOnItemClickListener(new DrawerItemClickListener());
+
+        // Menu drawer behaviour
+        mDrawerToggle = new ActionBarDrawerToggle(this, mMenu, R.string.drawer_open, R.string.drawer_close) {
+            // Called when menu drawer has settled in a completely closed state
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(R.string.home_title);
+            }
+            // Called when menu drawer has settled in a completely open state
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(R.string.drawer_title);
+            }
+        };
+        mMenu.addDrawerListener(mDrawerToggle);
     }
 
     protected class DrawerItemClickListener implements ListView.OnItemClickListener {

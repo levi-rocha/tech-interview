@@ -30,13 +30,13 @@ public class ArticleActivity extends AppCompatActivity {
         String articleid = this.getIntent().getStringExtra(ARTICLE);
         article = ((JoyjetApplication) getApplication()).getArticleById(articleid);
         initGallery();
+        initFavoriteIcon();
         initText();
     }
 
     private void initGallery() {
         final HorizontalScrollView mScroller = (HorizontalScrollView) findViewById(R.id.scroller);
         List<Bitmap> gallery = article.getGallery();
-        final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
         if (gallery.size() > 0) {
             final LinearLayout mGallery = (LinearLayout) findViewById(R.id.gallery);
             DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -45,32 +45,50 @@ public class ArticleActivity extends AppCompatActivity {
             for (Bitmap image : gallery) {
                 addImage(mGallery, image, width);
             }
-            mFavorite.getDrawable().setColorFilter(0xcccccc00, PorterDuff.Mode.MULTIPLY);
             if (gallery.size() > 1) {
-                ImageView btnLeft = (ImageView) findViewById(R.id.btnArticleLeft);
-                ImageView btnRight = (ImageView) findViewById(R.id.btnArticleRight);
-                btnLeft.setVisibility(View.VISIBLE);
-                btnRight.setVisibility(View.VISIBLE);
-                btnLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()-width);
-                        animator.setDuration(360);
-                        animator.start();
-                    }
-                });
-                btnRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()+width);
-                        animator.setDuration(360);
-                        animator.start();
-                    }
-                });
+                // More than one image to display in scroller
+                setupScrolling(mScroller, width);
             }
         } else {
             mScroller.setVisibility(GONE);
         }
+    }
+
+    private void setupScrolling(final HorizontalScrollView mScroller, final int width) {
+        ImageView btnLeft = (ImageView) findViewById(R.id.btnArticleLeft);
+        ImageView btnRight = (ImageView) findViewById(R.id.btnArticleRight);
+        btnLeft.setVisibility(View.VISIBLE);
+        btnRight.setVisibility(View.VISIBLE);
+        btnLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()-width);
+                animator.setDuration(360);
+                animator.start();
+            }
+        });
+        btnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX()+width);
+                animator.setDuration(360);
+                animator.start();
+            }
+        });
+    }
+
+    private void addImage(LinearLayout mGallery, Bitmap image, int width) {
+        ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setImageBitmap(image);
+        mGallery.addView(imageView);
+    }
+
+    private void initFavoriteIcon() {
+        // Yellow star
+        final ImageView mFavorite = (ImageView) findViewById(R.id.favorite);
+        mFavorite.getDrawable().setColorFilter(0xcccccc00, PorterDuff.Mode.MULTIPLY);
         if (article.isFavorite()) {
             mFavorite.setVisibility(GONE);
         } else {
@@ -85,14 +103,6 @@ public class ArticleActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    private void addImage(LinearLayout mGallery, Bitmap image, int width) {
-        ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageBitmap(image);
-        mGallery.addView(imageView);
     }
 
     private void initText() {

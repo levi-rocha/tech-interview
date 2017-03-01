@@ -54,36 +54,7 @@ public class Article implements ListItem, Comparable<Article> {
         final Article article = this;
         View view = (View) inflater.inflate(R.layout.article_list_item, null);
         if (gallery.size() > 0) {
-            final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
-            final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            final int width = displayMetrics.widthPixels;
-            for (Bitmap image : gallery) {
-                addImage(inflater, mGallery, image, width);
-            }
-            if (gallery.size() > 1) {
-                ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
-                ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
-                btnLeft.setVisibility(View.VISIBLE);
-                btnRight.setVisibility(View.VISIBLE);
-                btnLeft.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() - width);
-                        animator.setDuration(360);
-                        animator.start();
-                    }
-                });
-                btnRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() + width);
-                        animator.setDuration(360);
-                        animator.start();
-                    }
-                });
-            }
+            initGallery(inflater, view);
         }
         Button btnOpen = (Button) view.findViewById(R.id.btnArticleListOpen);
         btnOpen.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +67,57 @@ public class Article implements ListItem, Comparable<Article> {
                 parent.startActivity(intent);
             }
         });
+        initText(inflater, view);
+        return view;
+    }
+
+    private void initGallery(LayoutInflater inflater, View view) {
+        final LinearLayout mGallery = (LinearLayout) view.findViewById(R.id.small_gallery);
+        final HorizontalScrollView mScroller = (HorizontalScrollView) view.findViewById(R.id.small_scroller);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) inflater.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int width = displayMetrics.widthPixels;
+        for (Bitmap image : gallery) {
+            addImage(inflater, mGallery, image, width);
+        }
+        if (gallery.size() > 1) {
+            // More than one image to display in scroller
+            setupScrolling(view, mScroller, width);
+        }
+    }
+
+    private void addImage(LayoutInflater inflater, LinearLayout mGallery, Bitmap image, int width) {
+        ImageView imageView = new ImageView(inflater.getContext());
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        imageView.setImageBitmap(image);
+        mGallery.addView(imageView);
+    }
+
+    private void setupScrolling(View view, final HorizontalScrollView mScroller, final int width) {
+        ImageView btnLeft = (ImageView) view.findViewById(R.id.btnArticleListLeft);
+        ImageView btnRight = (ImageView) view.findViewById(R.id.btnArticleListRight);
+        btnLeft.setVisibility(View.VISIBLE);
+        btnRight.setVisibility(View.VISIBLE);
+        btnLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() - width);
+                animator.setDuration(360);
+                animator.start();
+            }
+        });
+        btnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ObjectAnimator animator = ObjectAnimator.ofInt(mScroller, "scrollX", mScroller.getScrollX() + width);
+                animator.setDuration(360);
+                animator.start();
+            }
+        });
+    }
+
+    private void initText(LayoutInflater inflater, View view) {
         TextView txtTitle = (TextView) view.findViewById(R.id.txtArticleListItemTitle);
         txtTitle.setText(this.title);
         Typeface custom_font = Typeface.createFromAsset(inflater.getContext().getAssets(),  "fonts/Montserrat-SemiBold.otf");
@@ -108,16 +130,6 @@ public class Article implements ListItem, Comparable<Article> {
         }
         custom_font = Typeface.createFromAsset(inflater.getContext().getAssets(),  "fonts/Montserrat-Regular.otf");
         txtPreview.setTypeface(custom_font);
-
-        return view;
-    }
-
-    private void addImage(LayoutInflater inflater, LinearLayout mGallery, Bitmap image, int width) {
-        ImageView imageView = new ImageView(inflater.getContext());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(width, 720));
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageBitmap(image);
-        mGallery.addView(imageView);
     }
 
     /* Comparable interface */
